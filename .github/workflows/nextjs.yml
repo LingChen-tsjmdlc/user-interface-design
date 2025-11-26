@@ -1,168 +1,103 @@
 # =============================================================================
-# GitHub Actions 工作流：构建并部署 Next.js 应用到 GitHub Pages
-#
-# 功能：当代码推送到 main 分支时，自动构建 Next.js 项目并部署到 GitHub Pages
-# 适用技术栈：Next.js + pnpm（也兼容 npm/yarn，但推荐使用 pnpm）
+# GitHub Actions 工作流：构建并部署 Next.js 应用到 GitHub Pages（使用 pnpm，简化版）
 # =============================================================================
 
 name: Deploy Next.js site to Pages
 
-# -----------------------------------------------------------------------------
-# 触发条件：
-# - 推送代码到 main 分支时自动运行
-# - 也可以在 GitHub Actions 页面手动触发
-# -----------------------------------------------------------------------------
 on:
   push:
-    branches: ["main"] # 仅在 main 分支推送时触发
-  workflow_dispatch: # 允许手动在 GitHub UI 中触发此 workflow
+    branches: ["main"]
+  workflow_dispatch:
 
-# -----------------------------------------------------------------------------
-# 权限配置：
-# - contents: read → 允许读取源码
-# - pages: write → 允许部署到 GitHub Pages
-# - id-token: write → 用于身份验证（如必要）
-# -----------------------------------------------------------------------------
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# -----------------------------------------------------------------------------
-# 并发控制：同一时间只允许一个部署流程，避免冲突
-# 已在进行中的部署不会被取消（适合生产环境）
-# -----------------------------------------------------------------------------
 concurrency:
-  group: "pages" # 并发组名称
-  cancel-in-progress: false # 不取消正在进行的 workflow
+  group: "pages"
+  cancel-in-progress: false
 
-# =============================================================================
-# Jobs：定义具体的自动化任务，这里分为 build（构建）和 deploy（部署）
-# =============================================================================
 jobs:
-  # -----------------------------------------------------------------------------
-  # 构建阶段：安装依赖、构建 Next.js 应用
-  # -----------------------------------------------------------------------------
   build:
-    runs-on: ubuntu-latest # 使用最新的 Ubuntu 运行环境
+    runs-on: ubuntu-latest
 
     steps:
       # -------------------------------------
-      # 1. 拉取代码仓库
+      # 1. 拉取代码
       # -------------------------------------
       - name: Checkout
-        uses: actions/checkout@v4 # 使用官方 checkout action 拉取代码
+        uses: actions/checkout@v4
 
       # -------------------------------------
-      # 2. 检测项目使用哪个包管理器
-      # 优先检查 pnpm-lock.yaml，然后是 yarn.lock，最后是 package-lock.json
-      # 如果都不匹配，则报错退出（你也可以去掉这个检测，直接使用 pnpm）
-      # -------------------------------------
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT       # 标记包管理器为 pnpm
-            echo "command=install" >> $GITHUB_OUTPUT    # 安装命令为 install
-            echo "runner=pnpm" >> $GITHUB_OUTPUT        # 执行命令的工具为 pnpm
-          elif [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-          elif [ -f "${{ github.workspace }}/package-lock.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT         # npm 推荐用 ci 保证一致性
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-          else
-            echo "Unable to determine package manager. Please ensure you are using pnpm, yarn or npm."
-            exit 1
-          fi
-
-      # -------------------------------------
-      # 3. 设置 Node.js 环境（版本 20）
-      # cache 参数会根据上面检测到的包管理器名称尝试缓存依赖
-      # 注意：actions/setup-node 的 cache 字段对 pnpm 支持有限，建议显式使用 pnpm/action-setup
+      # 2. 设置 Node.js 20
       # -------------------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # 推荐使用 Node.js 20
-          cache: ${{ steps.detect-package-manager.outputs.manager }} # 尝试按包管理器缓存
+          node-version: "20"
 
       # -------------------------------------
-      # 4. 显式设置 pnpm（推荐，确保版本一致，避免因环境不同导致问题）
-      # 如果你只想用 pnpm，可以不管上面的检测，直接固定用 pnpm
-      # 此步骤会在有 pnpm-lock.yaml 时才执行
+      # 3. 设置 pnpm（使用固定版本，比如 8.x，确保环境一致）
+      # ✅ 无论是否存在 pnpm-lock.yaml，都显式设置 pnpm
       # -------------------------------------
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
-        if: steps.detect-package-manager.outputs.manager == 'pnpm' # 仅当使用 pnpm 时执行
         with:
-          version: 8 # 指定 pnpm 版本，比如 8.x，请根据你的项目需要调整
-          run_install: false # 不在这里安装依赖，下面统一执行安装命令
+          version: 8 # 你可以根据项目改为 7、9 等
+          run_install: false # 先不安装依赖，下面会单独运行 install
 
       # -------------------------------------
-      # 5. 配置 GitHub Pages（告诉 Pages 你是用 Next.js 构建的静态站点）
+      # 4. 配置 GitHub Pages（Next.js 需要，会禁用 SSR 相关优化）
       # -------------------------------------
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
-          static_site_generator: next # 告知是 Next.js 项目，会禁用一些不兼容的优化
+          static_site_generator: next
 
       # -------------------------------------
-      # 6. 恢复构建缓存（加速构建流程）
-      # 缓存路径：.next/cache
-      # 注意：缓存 key 现在也包含了 pnpm-lock.yaml，确保 pnpm 用户也能命中缓存
+      # 5. 恢复依赖缓存（可选，加速后续安装）
       # -------------------------------------
       - name: Restore dependency cache
         uses: actions/cache@v4
         with:
           path: |
-            .next/cache  # Next.js 构建产物缓存目录
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+            .next/cache
+          key: ${{ runner.os }}-nextjs-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-pnpm-
 
       # -------------------------------------
-      # 7. 安装项目依赖
-      # 根据前面检测到的包管理器，运行对应的安装命令，比如 pnpm install
+      # 6. 安装依赖：使用 pnpm install
+      # ✅ 直接运行 pnpm，因为已经通过 action-setup 安装了
       # -------------------------------------
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.runner }} ${{ steps.detect-package-manager.outputs.command }}
+        run: pnpm install
 
       # -------------------------------------
-      # 8. 构建 Next.js 应用
-      # 使用对应的包管理器工具执行 next build
-      # 比如 pnpm next build
+      # 7. 构建 Next.js 应用：使用 pnpm next build
+      # ✅ 确保你的项目是支持静态导出的（output: 'export'）
       # -------------------------------------
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: pnpm next build
 
       # -------------------------------------
-      # 9. 上传构建结果作为 artifact，供部署阶段使用
-      # 构建生成的静态文件默认在 ./out 目录（Next.js 默认输出目录）
+      # 8. 上传构建产物到 GitHub Pages
+      # 注意：必须是 Next.js 输出到 ./out 目录（通常是通过 output: 'export' 实现）
       # -------------------------------------
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out # 必须与 next.config.js 中 output 设置一致，通常是 ./out
+          path: ./out # 默认静态导出目录
 
-  # -----------------------------------------------------------------------------
-  # 部署阶段：将构建好的静态站点发布到 GitHub Pages
-  # -----------------------------------------------------------------------------
   deploy:
     environment:
-      name: github-pages # 环境名称，可在 GitHub UI 中查看
-      url: ${{ steps.deployment.outputs.page_url }} # 自动注入部署后的访问 URL
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build # 必须等构建完成后才能部署
+    needs: build
 
     steps:
-      # -------------------------------------
-      # 1. 部署到 GitHub Pages
-      # 使用官方 action，自动从上一步的 artifact 部署
-      # 注意：id: deployment 用于输出 page_url
-      # -------------------------------------
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
