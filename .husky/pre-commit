@@ -1,0 +1,90 @@
+#!/bin/sh
+
+# 调试用 set -x
+# set -x
+
+echo "🐛 执行 pre-commit 钩子"
+echo "当前目录: $(pwd)"
+echo "Node版本: $(node -v)"
+echo "PNPM版本: $(pnpm -v)"
+
+echo "⚙️ 自动更新版本号..."
+node "$(dirname "$0")/update-version.js"
+
+if [ -f .version-changed ]; then
+  echo "⚠️ 版本号已更新，请重新提交"
+  rm .version-changed
+  exit 1
+fi
+
+echo "📂 查找待检查文件..."
+files=$(git diff --cached --name-only | grep -E '\.(js|ts|tsx|jsx)$' | grep -vE '^(\.husky|node_modules)/' || true)
+
+echo "找到文件列表:"
+printf "  - %s\n" $files
+
+[ -z "$files" ] && { echo "✅ 没有需要检查的文件"; exit 0; }
+
+echo "🔍 TypeScript 检查中..."
+tsc_output=$(pnpm tsc --noEmit --pretty false 2>&1)
+tsc_status=$?
+
+echo "🧪 TypeScript 返回码: $tsc_status"
+
+# --- 统计和输出 TypeScript 错误和警告数量和详情 ---
+tsc_errors=$(echo "$tsc_output" | grep -E "error TS[0-9]+:" || true)
+tsc_warnings=$(echo "$tsc_output" | grep -i "warning" || true)
+
+if [ -n "$tsc_errors" ]; then
+  echo "❌ TypeScript 错误详情:"
+  echo "$tsc_errors"
+fi
+
+if [ -n "$tsc_warnings" ]; then
+  echo "⚠️ TypeScript 警告详情:"
+  echo "$tsc_warnings"
+fi
+# ---
+
+if [ $tsc_status -ne 0 ]; then
+  echo "❌ TypeScript 检查未通过，终止提交"
+  exit 1
+fi
+
+echo "✅ TypeScript 检查通过"
+
+echo "🔍 ESLint 检查中..."
+eslint_output=$(pnpm eslint $files --format unix 2>&1)
+eslint_status=$?
+
+echo "🧪 ESLint 返回码: $eslint_status"
+
+# --- 统计 ESLint 错误和警告 ---
+eslint_errors=$(echo "$eslint_output" | grep -E ":[0-9]+:[0-9]+: Error" || true)
+eslint_warnings=$(echo "$eslint_output" | grep -E ":[0-9]+:[0-9]+: Warning" || true)
+
+if [ -n "$eslint_errors" ]; then
+  echo "❌ ESLint 错误详情:"
+  echo "$eslint_errors"
+fi
+
+if [ -n "$eslint_warnings" ]; then
+  echo "⚠️ ESLint 警告详情:"
+  echo "$eslint_warnings"
+fi
+# ---
+
+if [ $eslint_status -ne 0 ]; then
+  echo "❌ ESLint 检查未通过，终止提交"
+  exit 1
+fi
+
+if [ -n "$eslint_errors" ]; then
+  echo "❌ ESLint 检查未通过（检测到错误）"
+  exit 1
+fi
+
+echo "✅ ESLint 无错误（警告已忽略）"
+
+echo "🎉 所有检查通过，钩子执行完毕"
+exit 0
