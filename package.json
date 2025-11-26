@@ -1,6 +1,6 @@
 {
   "name": "next-app-template",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -9,7 +9,6 @@
     "build-linux": "next build && npm run move-linux",
     "start": "next start -p 3005",
     "start-alone": "node .next/standalone/server.js",
-    "postbuild": "next-sitemap",
     "lint": "eslint --fix",
     "prepare": "husky",
     "move-win": "xcopy /e /i .next\\static .next\\standalone\\.next\\static",
