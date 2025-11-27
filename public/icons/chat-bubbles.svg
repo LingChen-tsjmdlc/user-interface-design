@@ -1,0 +1,75 @@
+<svg viewBox="0 0 48.199 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.199036" height="48.000000" fill="none">
+	<defs>
+		<g id="pixso_custom_effect_44">
+			<effect x="0.000000" y="4.000000" visibility="visible" fill="rgb(0,0,0)" fill-opacity="0.25" effectType="dropShadow" stdDeviation="4" radius="0" />
+		</g>
+		<filter id="filter_44" width="48.199036" height="48.000000" x="0.000000" y="0.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_44)" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="0.000000" dy="4.000000" in="hardAlpha" />
+			<feGaussianBlur stdDeviation="1.33333337" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="out" />
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0 " />
+			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
+			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
+		</filter>
+		<clipPath id="clipPath_13">
+			<rect width="48.000000" height="48.000000" x="0.199036" y="0.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<g id="pixso_custom_effect_45">
+			<effect x="5.000000" y="11.000000" visibility="visible" fill="rgb(248,210,212)" fill-opacity="1" effectType="dropShadow" stdDeviation="9" radius="0" />
+		</g>
+		<filter id="filter_45" width="50.000000" height="45.680321" x="0.000000" y="5.000000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_45)" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix" />
+			<feOffset dx="5.000000" dy="11.000000" in="SourceAlpha" />
+			<feGaussianBlur stdDeviation="3" />
+			<feColorMatrix type="matrix" values="0 0 0 0 0.972549 0 0 0 0 0.823529 0 0 0 0 0.831373 0 0 0 1 0 " />
+			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
+			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
+		</filter>
+		<linearGradient id="paint_linear_62" x1="30" x2="4.00715828" y1="27.5000038" y2="8.76482773" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,100,148)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,154.614,159.033)" offset="0.376846075" stop-opacity="1" />
+			<stop stop-color="rgb(255,199,168)" offset="0.98822552" stop-opacity="1" />
+		</linearGradient>
+		<g id="pixso_custom_effect_46">
+			<effect visibility="visible" effectType="backgroundBlur" saturation="0" stdDeviation="4" />
+		</g>
+		<filter id="filter_46" width="33.000000" height="26.360641" x="10.500000" y="-0.500000" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_46)" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix" />
+			<feBlend result="shape" in="SourceGraphic" in2="BackgroundImageFix" mode="normal" />
+		</filter>
+		<clipPath id="outline_mask_17" transform="matrix(1,0,0,1,-10.5,0.5)">
+			<path d="M6.22473 2.89001C6.73092 3.54757 6.26216 4.5 5.43232 4.5L2.56768 4.5C1.73784 4.5 1.26908 3.54757 1.77527 2.89001L3.20759 1.02937C3.6079 0.509358 4.3921 0.509358 4.79241 1.02937L6.22473 2.89001Z" fill="rgb(255,255,255)" fill-rule="evenodd" transform="matrix(-1,0,0,-1,32,26)" />
+			<path d="M38 0C40.7614 0 43 2.23858 43 5L43 17C43 19.7614 40.7614 22 38 22L16 22C13.2386 22 11 19.7614 11 17L11 5C11 2.23858 13.2386 0 16 0L38 0Z" fill="rgb(255,255,255)" fill-rule="evenodd" />
+		</clipPath>
+		<linearGradient id="paint_linear_63" x1="28.4999943" x2="15.1431065" y1="21.9023743" y2="-7.34078217" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,100,148)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,145,199)" offset="1" stop-opacity="0" />
+		</linearGradient>
+		<linearGradient id="paint_linear_64" x1="43.0000076" x2="17.2503967" y1="20.2448082" y2="-0.313634872" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,161,90)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,200,214)" offset="1" stop-opacity="1" />
+		</linearGradient>
+		<linearGradient id="paint_linear_65" x1="28.0000019" x2="27.8393116" y1="10.999999" y2="15.4762821" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,255,255)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,189,197)" offset="1" stop-opacity="1" />
+		</linearGradient>
+	</defs>
+	<g clip-path="url(#clipPath_13)" filter="url(#filter_44)" customFrame="url(#clipPath_13)">
+		<rect id="chat-bubbles" width="48.000000" height="48.000000" x="0.199036" y="0.000000" fill="rgb(255,255,255)" fill-opacity="0" />
+		<g filter="url(#filter_45)">
+			<path id="合并" d="M36 10C36 7.23858 33.7614 5 31 5L9 5C6.23858 5 4 7.23858 4 10L4 22C4 24.7614 6.23858 27 9 27L11.0509 27C11.0504 27.104 11.0829 27.2106 11.1556 27.305L13.6038 30.4853C13.804 30.7453 14.1961 30.7453 14.3962 30.4853L16.8444 27.305C16.9171 27.2106 16.9496 27.104 16.9491 27L31 27C33.7614 27 36 24.7614 36 22L36 10Z" fill="url(#paint_linear_62)" fill-rule="evenodd" />
+		</g>
+		<g data-pixso-skip-parse="true">
+			<foreignObject width="33.000000" height="26.360641" x="10.500000" y="-0.500000">
+				<div xmlns="http://www.w3.org/1999/xhtml" style="clip-path:url(#outline_mask_17);height:100%;backdrop-filter:blur(2.000000px);width:100%;-webkit-backdrop-filter:blur(2.000000px);" />
+			</foreignObject>
+		</g>
+		<g filter="url(#filter_46)">
+			<path id="合并" d="M38 0L16 0C13.2386 0 11 2.23858 11 5L11 17C11 19.7614 13.2386 22 16 22L24.5207 22C25.0461 22 25.4548 22.6937 25.7753 23.11L27.2076 24.9706C27.6079 25.4906 28.3921 25.4906 28.7924 24.9706L30.2247 23.11C30.5452 22.6937 30.9539 22 31.4793 22L38 22C40.7614 22 43 19.7614 43 17L43 5C43 2.23858 40.7614 0 38 0Z" fill="url(#paint_linear_63)" fill-opacity="0.5" fill-rule="evenodd" />
+			<path id="合并" d="M16 0L38 0C40.7614 0 43 2.23858 43 5L43 17C43 19.7614 40.7614 22 38 22L31.4793 22C30.9539 22 30.5452 22.6937 30.2247 23.11L28.7924 24.9706C28.3921 25.4906 27.6079 25.4906 27.2076 24.9706L25.7753 23.11C25.4548 22.6937 25.0461 22 24.5207 22L16 22C13.2386 22 11 19.7614 11 17L11 5C11 2.23858 13.2386 0 16 0ZM38 0.5L16 0.5Q15.068 0.5 14.2726 0.829494L14.2725 0.829506L14.2725 0.829519Q13.477 1.15903 12.818 1.81802Q12.159 2.47702 11.8295 3.27251L11.8295 3.27253Q11.5 4.06802 11.5 5L11.5 17Q11.5 17.9319 11.8294 18.7273L11.8295 18.7275Q12.159 19.523 12.818 20.182Q13.477 20.841 14.2725 21.1705Q15.068 21.5 16 21.5L24.5207 21.5C24.8502 21.5 25.1674 21.6457 25.4722 21.9372C25.6154 22.0742 25.7996 22.2973 26.0246 22.6065C26.0922 22.6995 26.1412 22.7657 26.1715 22.805L27.6038 24.6656C27.7039 24.7956 27.8359 24.8606 28 24.8606C28.1641 24.8606 28.2961 24.7956 28.3962 24.6656L29.8285 22.805C29.8588 22.7657 29.9077 22.6996 29.9754 22.6065C30.2004 22.2973 30.3846 22.0742 30.5278 21.9372Q30.9414 21.5417 31.3853 21.504L31.3855 21.504Q31.4322 21.5 31.4793 21.5L38 21.5C39.2426 21.5 40.3033 21.0607 41.182 20.182C42.0607 19.3033 42.5 18.2426 42.5 17L42.5 5Q42.5 4.06802 42.1705 3.27253Q41.841 2.47703 41.182 1.81802C40.3033 0.93934 39.2426 0.5 38 0.5Z" fill="url(#paint_linear_64)" fill-rule="evenodd" />
+		</g>
+		<path id="合并" d="M19 9C20.1046 9 21 9.89543 21 11C21 12.1046 20.1046 13 19 13C17.8954 13 17 12.1046 17 11C17 9.89543 17.8954 9 19 9ZM27 9C28.1046 9 29 9.89543 29 11C29 12.1046 28.1046 13 27 13C25.8954 13 25 12.1046 25 11C25 9.89543 25.8954 9 27 9ZM38 11C38 9.89543 37.1046 9 36 9C34.8954 9 34 9.89543 34 11C34 12.1046 34.8954 13 36 13C37.1046 13 38 12.1046 38 11Z" fill="url(#paint_linear_65)" fill-rule="evenodd" />
+	</g>
+</svg>
