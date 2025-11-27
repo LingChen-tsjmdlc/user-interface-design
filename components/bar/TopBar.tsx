@@ -7,6 +7,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { ThemeSwitch } from "@/components/bar/theme-switch";
+import { Button } from "@heroui/button";
+import { Link as HeroLink } from "@heroui/react";
 
 export const TopBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,7 +69,7 @@ export const TopBar = () => {
                 href={item.link}
                 className="relative px-3 sm:px-3 md:px-4 py-2 rounded-full bg-sky-200/20 dark:bg-sky-950/20"
               >
-                {/* 涟漪背景动画 - 修改为蓝色 */}
+                {/* 涟漪背景动画 */}
                 {hovered === idx && (
                   <motion.div
                     layoutId="hovered-bg"
@@ -105,6 +107,12 @@ export const TopBar = () => {
 
         {/* 右侧功能 */}
         <div className="flex items-center gap-1 sm:gap-2">
+          <HeroLink isExternal href="https://github.com/LingChen-tsjmdlc/user-interface-design">
+            <Button className="mr-2" color="secondary" variant="shadow">
+              <Icon icon={"line-md:github-twotone"} className="text-large" />
+              源代码
+            </Button>
+          </HeroLink>
           <ThemeSwitch />
         </div>
       </div>
