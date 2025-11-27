@@ -5,4 +5,4 @@ const nextConfig = {
   assetPrefix: "/user-interface-design",
 };
 
-module.exports = nextConfig;
+export default nextConfig;
